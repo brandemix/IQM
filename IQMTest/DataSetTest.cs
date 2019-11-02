@@ -30,29 +30,29 @@ namespace IQMTest
         }
 
         [Fact]
-        public void DataSet_GetMean_zer0() {
+        public void DataSet_GetIQMean_zer0() {
             set.AddPoint(2);
             set.AddPoint(1);
-            Assert.Equal(0, set.GetMean());
+            Assert.Equal(0, set.GetIQMean());
         }
 
         [Fact]
-        public void DataSet_GetMean_four() {
+        public void DataSet_GetIQMean_four() {
             set.AddPoint(1);
             set.AddPoint(2);
             set.AddPoint(3);
             set.AddPoint(4);
-            Assert.Equal(2.5, set.GetMean());
+            Assert.Equal(2.5, set.GetIQMean());
         }
 
         [Fact]
-        public void DataSet_GetMean_Not_four() {
+        public void DataSet_GetIQMean_Not_four() {
             set.AddPoint(1);
             set.AddPoint(2);
             set.AddPoint(4);
             set.AddPoint(3);
             set.AddPoint(5);
-            Assert.Equal(3, set.GetMean());
+            Assert.Equal(3, set.GetIQMean());
         }
     }
 }

@@ -20,7 +20,7 @@ namespace IQM
                         data.AddPoint(Convert.ToInt32(line));                        
                         if (data.Count() >= 4)
                         {
-                            double mean = data.GetMean();
+                            double mean = data.GetIQMean();
                             Console.WriteLine("Index => {0}, Mean => {1:F2}", data.Count(), mean);
                         }
                     }
