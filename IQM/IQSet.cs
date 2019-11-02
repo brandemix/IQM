@@ -17,10 +17,13 @@ namespace IQM
         {
             get => this.set.Count;
         }
+        public List<int> Set {
+            get => this.set;
+        }
         public int Max()
         {
             if (this.max_index == -1) {
-                return 0;
+                return int.MinValue;
             }
 
             return this.set[this.max_index];
@@ -28,7 +31,7 @@ namespace IQM
         public int Min()
         {
             if (this.min_index == -1) {
-                return 0;
+                return int.MaxValue;
             }
 
             return this.set[this.min_index];
@@ -94,6 +97,75 @@ namespace IQM
             this.firstQuartile = new Quartile();
             this.innerQuartile = new Quartile();
             this.fourthQuartile = new Quartile();
+        }
+        public int Count 
+        {
+            get => this.firstQuartile.Count + this.innerQuartile.Count + this.fourthQuartile.Count;
+        }
+        public double Q
+        {
+            get => this.Count / 4;
+        }
+        public List<int> FirstQuartile {
+            get => this.firstQuartile.Set;
+        }
+        public List<int> InnerQuartile {
+            get => this.innerQuartile.Set;
+        }
+        public List<int> FourthQuartile {
+            get => this.fourthQuartile.Set;
+        }
+        public void AddPoint(int point)
+        {
+            if (this.Count < 4) {
+                if (point > this.fourthQuartile.Max()) {
+                    this.fourthQuartile.AddPoint(point);
+                    if (this.fourthQuartile.Count > 1) {
+                        point = this.fourthQuartile.RetrieveMin();
+                    } else {
+                        return;
+                    }
+                }
+
+                if (point < this.firstQuartile.Min()) {
+                    this.firstQuartile.AddPoint(point);
+                    if (this.firstQuartile.Count > 1) {
+                        point = this.firstQuartile.RetrieveMax();
+                    } else {
+                        return;
+                    }
+                }
+
+                this.innerQuartile.AddPoint(point);
+                return;
+            }
+
+            double nextQ = (this.Count + 1) / 4;
+            if (nextQ % 4 == 0) {
+                this.innerQuartile.AddPoint(point);
+                int min = this.innerQuartile.RetrieveMin();
+                int max = this.innerQuartile.RetrieveMax();
+                this.firstQuartile.AddPoint(min);
+                this.fourthQuartile.AddPoint(max);
+            } else if (point < this.firstQuartile.Max()) {
+                this.firstQuartile.AddPoint(point);
+                int max = this.firstQuartile.RetrieveMax();
+                this.innerQuartile.AddPoint(max);
+            } else if (point > this.fourthQuartile.Min()) {
+                this.fourthQuartile.AddPoint(point);
+                int min = this.fourthQuartile.RetrieveMin();
+                this.innerQuartile.AddPoint(min);
+            } else {
+                this.innerQuartile.AddPoint(point);
+            }
+        }
+        public double IQM()
+        {
+            if (this.Count < 4) {
+                return 0.0;
+            }
+
+            return 0.0;
         }
     }
 }
