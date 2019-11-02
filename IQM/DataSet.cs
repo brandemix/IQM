@@ -29,6 +29,10 @@ namespace IQM
 
         public double GetMean() {
             double q = data.Count() / 4.0;
+            if (q < 1) {
+                return 0.0;
+            }
+            
             int i = (int)Math.Ceiling(q) - 1;
             int c = (int)Math.Floor(q*3) - i + 1;
 
