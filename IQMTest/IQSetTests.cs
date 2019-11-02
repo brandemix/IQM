@@ -78,7 +78,7 @@ namespace IQMTest
             this.q.AddPoint(4);
             this.q.AddPoint(3);
             this.q.AddPoint(2);
-            Assert.Equal(3, this.q.WeightedMean(0.75, 2.5));
+            Assert.Equal(3, this.q.WeightedMean(1.25));
         }
     }
     public class IQSetTest
@@ -156,7 +156,6 @@ namespace IQMTest
             this.set.AddPoint(4);
             this.set.AddPoint(5);
             Assert.Equal(1.25, this.set.Q);
-            Assert.Equal(0.75, this.set.Weight());
         }
         [Fact]
         public void IQM_NotDivisible_ByFour() {
@@ -166,6 +165,19 @@ namespace IQMTest
             this.set.AddPoint(4);
             this.set.AddPoint(5);
             Assert.Equal(3, this.set.IQM());
+        }
+        [Fact]
+        public void IQM_NotDivisible_ByFour_Again() {
+            this.set.AddPoint(301);
+            this.set.AddPoint(286);
+            this.set.AddPoint(287);
+            this.set.AddPoint(292);
+            this.set.AddPoint(311);
+            this.set.AddPoint(314);
+            Assert.Equal(new List<int> {286}, this.set.FirstQuartile);
+            Assert.Equal(new List<int> {287, 292, 301, 311}, this.set.InnerQuartile);
+            Assert.Equal(new List<int> {314}, this.set.FourthQuartile);
+            Assert.Equal(297.33, Math.Round(this.set.IQM(), 2));
         }
     }
 }

@@ -49,7 +49,7 @@ namespace IQM
             }
             return (double)sum / this.Count;
         }
-        public double WeightedMean(double weight, double q)
+        public double WeightedMean(double q)
         {
             if (this.Count == 0) {
                 return 0;
@@ -66,8 +66,10 @@ namespace IQM
                 }
                 sum += this.set[i];
             }
+
+            double weight = q - ((this.Count / 2.0) - 1);
             sum += (weight * (this.set[this.max_index] + this.set[this.min_index]));
-            return sum / q;
+            return sum / (q * 2.0);
         }
         public void AddPoint(int point)
         {
@@ -139,13 +141,6 @@ namespace IQM
         {
             get => (double)this.Count / 4;
         }
-        public double Weight()
-        {
-            double innerQ = this.Q * 2;
-            double upper = Math.Ceiling(innerQ);
-            double weight = (innerQ - (upper - 2)) / 2;
-            return weight;
-        }
         public List<int> FirstQuartile {
             get => this.firstQuartile.Set;
         }
@@ -209,7 +204,7 @@ namespace IQM
                 return this.innerQuartile.Mean();
             }
 
-            return this.innerQuartile.WeightedMean(this.Weight(), this.Q*2);
+            return this.innerQuartile.WeightedMean(this.Q);
         }
     }
 }
