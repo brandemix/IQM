@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace IQM
@@ -35,6 +36,38 @@ namespace IQM
             }
 
             return this.set[this.min_index];
+        }
+        public double Mean()
+        {
+            if (this.Count == 0) {
+                return 0;
+            }
+
+            double sum = 0;
+            for(int i = 0; i < this.Count; i++) {
+                sum += this.set[i];
+            }
+            return (double)sum / this.Count;
+        }
+        public double WeightedMean(double weight, double q)
+        {
+            if (this.Count == 0) {
+                return 0;
+            }
+
+            if (q == 0) {
+                throw new DivideByZeroException();
+            }
+
+            double sum = 0;
+            for (int i = 0; i < this.Count; i++) {
+                if (i == this.max_index || i == this.min_index) {
+                    continue;
+                }
+                sum += this.set[i];
+            }
+            sum += (weight * (this.set[this.max_index] + this.set[this.min_index]));
+            return sum / q;
         }
         public void AddPoint(int point)
         {
@@ -104,7 +137,14 @@ namespace IQM
         }
         public double Q
         {
-            get => this.Count / 4;
+            get => (double)this.Count / 4;
+        }
+        public double Weight()
+        {
+            double innerQ = this.Q * 2;
+            double upper = Math.Ceiling(innerQ);
+            double weight = (innerQ - (upper - 2)) / 2;
+            return weight;
         }
         public List<int> FirstQuartile {
             get => this.firstQuartile.Set;
@@ -140,8 +180,8 @@ namespace IQM
                 return;
             }
 
-            double nextQ = (this.Count + 1) / 4;
-            if (nextQ % 4 == 0) {
+            // double nextQ = (this.Count + 1) / 4;
+            if ((this.Count + 1) % 4 == 0) {
                 this.innerQuartile.AddPoint(point);
                 int min = this.innerQuartile.RetrieveMin();
                 int max = this.innerQuartile.RetrieveMax();
@@ -165,7 +205,11 @@ namespace IQM
                 return 0.0;
             }
 
-            return 0.0;
+            if (this.Count % 4 == 0) {
+                return this.innerQuartile.Mean();
+            }
+
+            return this.innerQuartile.WeightedMean(this.Weight(), this.Q*2);
         }
     }
 }
