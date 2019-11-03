@@ -19,6 +19,7 @@ namespace IQMTest
         {
             set.AddPoint(1);
             Assert.Equal(1, set.Count);
+            Assert.Equal(new List<int> {1}, set.Points);
         }
 
         [Fact]
