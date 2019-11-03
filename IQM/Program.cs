@@ -1,9 +1,8 @@
 ﻿using System;
-using System.IO;
 
 namespace IQM
 {
-    class Program
+    public class Program
     {
         static void StreamIQMData(IDataRead reader, IDataWrite writer)
         {
