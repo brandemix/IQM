@@ -27,17 +27,23 @@ namespace IQM
         {
             int start = 0;
             int count = this.Count;
-            while (true) {
-                if (count - start == 0) {
+            while (true) 
+            {
+                if (count - start == 0) 
+                {
                     this.data.Add(point);
                     break;
                 }
 
-                if (count - start == 1) {
+                if (count - start == 1) 
+                {
                     int element = this.data.ElementAt(start);
-                    if (point >= element) {
+                    if (point >= element) 
+                    {
                         this.data.Insert(start + 1, point);
-                    } else {
+                    } 
+                    else 
+                    {
                         this.data.Insert(start, point);
                     }
                     break;
@@ -45,12 +51,17 @@ namespace IQM
 
                 List<int> chunk = this.data.GetRange(start, (count - start));
                 int middleElement = chunk.ElementAt(chunk.Count / 2);
-                if (point == middleElement) {
+                if (point == middleElement) 
+                {
                     this.data.Insert((count - start) / 2, point);
                     break;
-                } else if (point > middleElement) {
+                } 
+                else if (point > middleElement) 
+                {
                     start += chunk.Count / 2 + 1;
-                } else {
+                } 
+                else 
+                {
                     count -= chunk.Count / 2;
                 }
             }
@@ -60,7 +71,8 @@ namespace IQM
         /// set. Shall return 0 when less than four points in the data set.</summary>
         public double GetIQMean() {
             double q = data.Count() / 4.0;
-            if (q < 1) {
+            if (q < 1) 
+            {
                 return 0.0;
             }
 
