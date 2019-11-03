@@ -30,7 +30,7 @@ namespace IQMTest
         }
 
         [Fact]
-        public void DataSet_AddPoint_Orders() 
+        public void DataSet_AddPoint_Orders_Many() 
         {
             set.AddPoint(23);
             set.AddPoint(0);
@@ -44,7 +44,7 @@ namespace IQMTest
         }
 
         [Fact]
-        public void DataSet_GetIQMean_zer0() 
+        public void DataSet_GetIQMean_Returns_0() 
         {
             set.AddPoint(2);
             set.AddPoint(1);
@@ -52,7 +52,7 @@ namespace IQMTest
         }
 
         [Fact]
-        public void DataSet_GetIQMean_four() 
+        public void DataSet_GetIQMean_Returns_Mean() 
         {
             set.AddPoint(1);
             set.AddPoint(2);
@@ -62,7 +62,7 @@ namespace IQMTest
         }
 
         [Fact]
-        public void DataSet_GetIQMean_Not_four() 
+        public void DataSet_GetIQMean_Returns_Mean_Weighted() 
         {
             set.AddPoint(1);
             set.AddPoint(2);

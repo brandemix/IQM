@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace IQM
 {
-    /// <summary>Class <c>DataSet</c> represents a set of data points.</summary>
+    ///<summary>Class <c>DataSet</c> represents a set of data points.</summary>
     public class DataSet
     {
         private List<int> data;
@@ -25,44 +25,51 @@ namespace IQM
         ///<summary>Method <c>AddPoint</c> adds a data point in order.</summary>
         public void AddPoint(int point)
         {
+            /// Starting with the full list, break it in half depending on whether
+            /// the point is greater than or less than the middle value. Do this until
+            /// there is one value and insert the point before or after.
             int start = 0;
-            int count = this.Count;
+            int end = this.Count;
             while (true) 
             {
-                if (count - start == 0) 
+                /// When there are no values in the list yet, just insert
+                if (end - start == 0) 
                 {
                     this.data.Add(point);
                     break;
                 }
 
-                if (count - start == 1) 
+                /// When there is just one value remaining to compare against, insert
+                /// to the left or right of it.
+                if (end - start == 1)
                 {
                     int element = this.data.ElementAt(start);
                     if (point >= element) 
                     {
                         this.data.Insert(start + 1, point);
                     } 
-                    else 
+                    else
                     {
                         this.data.Insert(start, point);
                     }
                     break;
                 }
 
-                List<int> chunk = this.data.GetRange(start, (count - start));
-                int middleElement = chunk.ElementAt(chunk.Count / 2);
+                /// Get the middle element of the current range.
+                int middleIndex = start + (end - start) / 2;
+                int middleElement = this.data.ElementAt(middleIndex);
                 if (point == middleElement) 
                 {
-                    this.data.Insert((count - start) / 2, point);
+                    this.data.Insert(middleIndex, point);
                     break;
                 } 
-                else if (point > middleElement) 
+                else if (point > middleElement)
                 {
-                    start += chunk.Count / 2 + 1;
+                    start += (middleIndex - start);
                 } 
-                else 
+                else
                 {
-                    count -= chunk.Count / 2;
+                    end -= (end - middleIndex);
                 }
             }
         }
@@ -70,16 +77,16 @@ namespace IQM
         ///<summary>Method <c>GetIQMean</c> calculates the Innerquartile Mean for the data
         /// set. Shall return 0 when less than four points in the data set.</summary>
         public double GetIQMean() {
-            double q = data.Count() / 4.0;
+            double q = this.Count / 4.0;
             if (q < 1) 
             {
                 return 0.0;
             }
 
-            int i = (int)Math.Ceiling(q) - 1;
-            int c = (int)Math.Floor(q*3) - i + 1;
+            int startIndex = (int)Math.Ceiling(q) - 1;
+            int rangeCount = (int)Math.Floor(q*3) - startIndex + 1;
 
-            List<int> ys = data.GetRange(i, c);
+            List<int> ys = data.GetRange(startIndex, rangeCount);
             double factor = q - ((ys.Count() / 2.0) - 1);
             
             int sum = 0;
