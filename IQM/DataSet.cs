@@ -26,14 +26,14 @@ namespace IQM
         public void AddPoint(int point)
         {
             int start = 0;
-            int end = this.Count;
+            int count = this.Count;
             while (true) {
-                if (end - start == 0) {
+                if (count - start == 0) {
                     this.data.Add(point);
                     break;
                 }
 
-                if (end - start == 1) {
+                if (count - start == 1) {
                     int element = this.data.ElementAt(start);
                     if (point >= element) {
                         this.data.Insert(start + 1, point);
@@ -43,15 +43,15 @@ namespace IQM
                     break;
                 }
 
-                List<int> chunk = this.data.GetRange(start, (end - start));
+                List<int> chunk = this.data.GetRange(start, (count - start));
                 int middleElement = chunk.ElementAt(chunk.Count / 2);
                 if (point == middleElement) {
-                    this.data.Insert((end - start) / 2, point);
+                    this.data.Insert((count - start) / 2, point);
                     break;
                 } else if (point > middleElement) {
                     start += chunk.Count / 2 + 1;
                 } else {
-                    end -= chunk.Count / 2;
+                    count -= chunk.Count / 2;
                 }
             }
         }
