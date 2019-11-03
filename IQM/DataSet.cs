@@ -78,39 +78,23 @@ namespace IQM
         /// set. Shall return 0 when less than 1 data point in each quartile.</summary>
         public double GetIQMean() {
             double q = this.Count / 4.0;
-            // if (q < 1) 
-            // {
-            //     return 0.0;
-            // }
+            if (q < 1) 
+            {
+                return 0.0;
+            }
 
             int startIndex = (int)Math.Ceiling(q) - 1;
             int rangeCount = (int)Math.Floor(q*3) - startIndex + 1;
-
-            //List<int> ys = data.GetRange(startIndex, rangeCount);
             double factor = q - ((rangeCount / 2.0) - 1);
             
             int sum = 0;
 
+            /// Loop over data range skipping the first and last points to get the sum
             for (int i = startIndex + 1; i < startIndex + rangeCount - 1; i++) {
                 sum += this.data[i];
             }
             
-            // var listEnumerator = ys.GetEnumerator();
-            // for (var j = 0; listEnumerator.MoveNext() == true; j++)
-            // {
-            //     if (j == 0)
-            //     {
-            //         continue;
-            //     }
-            //     else if (j == (ys.Count() - 1))
-            //     {
-            //         break; 
-            //     }
-                
-            //     sum += listEnumerator.Current;
-            // }
-
-            //double mean = (sum + (ys.First() + ys.Last()) * factor) / (2 * q);
+            /// Calculate the mean, adding the first and last data points multiplied by their factor.
             double mean = (sum + (this.data[startIndex] + this.data[startIndex + rangeCount - 1]) * factor) / (2 * q);
             return mean;
         }
