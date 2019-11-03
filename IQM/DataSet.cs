@@ -4,7 +4,8 @@ using System.Linq;
 
 namespace IQM
 {
-    ///<summary>Class <c>DataSet</c> represents a set of data points.</summary>
+    /// <summary>Class <c>DataSet</c> represents a set of data points.
+    /// </summary>
     public class DataSet
     {
         private List<int> data;
@@ -22,7 +23,8 @@ namespace IQM
             get => data;
         }
 
-        ///<summary>Method <c>AddPoint</c> adds a data point in order.</summary>
+        /// <summary>Method <c>AddPoint</c> adds a data point in order.</summary>
+        /// <param name="point">A single data point.</param>
         public void AddPoint(int point)
         {
             /// Starting with the full list, break it in half depending on whether
@@ -75,7 +77,8 @@ namespace IQM
         }
 
         ///<summary>Method <c>GetIQMean</c> calculates the Innerquartile Mean for the data
-        /// set. Shall return 0 when less than 1 data point in each quartile.</summary>
+        /// set.</summary>
+        /// <returns>0 when less than 1 data point in each quartile</returns>
         public double GetIQMean() {
             double q = this.Count / 4.0;
             if (q < 1) 

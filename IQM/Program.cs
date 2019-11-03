@@ -4,6 +4,9 @@ namespace IQM
 {
     public class Program
     {
+        /// Stream input data from a reader. Calculate the incremental interquartile
+        /// mean of the data set.
+        /// Can throw Exception on convert to int32.
         static void StreamIQMData(IDataRead reader, IDataWrite writer)
         {
             DataSet data = new DataSet();
