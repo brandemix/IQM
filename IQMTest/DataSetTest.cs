@@ -18,7 +18,7 @@ namespace IQMTest
         public void DataSet_AddPoint_IncrementsSet()
         {
             set.AddPoint(1);
-            Assert.Equal(1, set.Count());
+            Assert.Equal(1, set.Count);
         }
 
         [Fact]
@@ -27,6 +27,19 @@ namespace IQMTest
             set.AddPoint(2);
             set.AddPoint(1);
             Assert.Equal(new List<int> { 1, 2 }, set.Points);
+        }
+
+        [Fact]
+        public void DataSet_AddPoint_Orders() {
+            set.AddPoint(23);
+            set.AddPoint(0);
+            set.AddPoint(40);
+            set.AddPoint(20);
+            set.AddPoint(3);
+            set.AddPoint(8);
+            set.AddPoint(13);
+            set.AddPoint(33);
+            Assert.Equal(new List<int> {0, 3, 8, 13, 20, 23, 33, 40}, set.Points);
         }
 
         [Fact]

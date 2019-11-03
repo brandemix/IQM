@@ -179,5 +179,21 @@ namespace IQMTest
             Assert.Equal(new List<int> {314}, this.set.FourthQuartile);
             Assert.Equal(297.33, Math.Round(this.set.IQM(), 2));
         }
+        [Fact]
+        public void IQM_Index_9() {
+            this.set.AddPoint(301);
+            this.set.AddPoint(286);
+            this.set.AddPoint(287);
+            this.set.AddPoint(292);
+            this.set.AddPoint(311);
+            this.set.AddPoint(314);
+            this.set.AddPoint(303);
+            this.set.AddPoint(312);
+            this.set.AddPoint(299);
+            Assert.Equal(new List<int> {286, 287}, this.set.FirstQuartile);
+            Assert.Equal(new List<int> {292, 301, 311, 303, 299}, this.set.InnerQuartile);
+            Assert.Equal(new List<int> {314, 312}, this.set.FourthQuartile);
+            Assert.Equal(301.17, Math.Round(this.set.IQM(), 2));
+        }
     }
 }

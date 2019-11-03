@@ -8,19 +8,23 @@ namespace IQM
         private List<int> set;
         private int max_index;
         private int min_index;
+
         public Quartile()
         {
             this.set = new List<int>();
             this.max_index = -1;
             this.min_index = -1;
         }
+
         public int Count
         {
             get => this.set.Count;
         }
+
         public List<int> Set {
             get => this.set;
         }
+
         public int Max()
         {
             if (this.max_index == -1) {
@@ -29,6 +33,7 @@ namespace IQM
 
             return this.set[this.max_index];
         }
+
         public int Min()
         {
             if (this.min_index == -1) {
@@ -37,18 +42,20 @@ namespace IQM
 
             return this.set[this.min_index];
         }
+
         public double Mean()
         {
             if (this.Count == 0) {
-                return 0;
+                return 0.0;
             }
 
             double sum = 0;
             for(int i = 0; i < this.Count; i++) {
                 sum += this.set[i];
             }
-            return (double)sum / this.Count;
+            return sum / this.Count;
         }
+
         public double WeightedMean(double q)
         {
             if (this.Count == 0) {
@@ -59,7 +66,7 @@ namespace IQM
                 throw new DivideByZeroException();
             }
 
-            double sum = 0;
+            double sum = 0.0;
             for (int i = 0; i < this.Count; i++) {
                 if (i == this.max_index || i == this.min_index) {
                     continue;
@@ -67,25 +74,31 @@ namespace IQM
                 sum += this.set[i];
             }
 
-            double weight = q - ((this.Count / 2.0) - 1);
+            double weight = q - ((this.Count / 2.0) - 1.0);
             sum += (weight * (this.set[this.max_index] + this.set[this.min_index]));
             return sum / (q * 2.0);
         }
+
         public void AddPoint(int point)
         {
             this.set.Add(point);
-            if (this.max_index == -1) {
-                this.max_index = 0;
-                this.min_index = this.max_index;
-                return;
-            }
+            // if (this.max_index == -1) {
+            //     this.max_index = 0;
+            //     this.min_index = this.max_index;
+            //     return;
+            // }
 
-            if (point > this.set[this.max_index]) {
+            // Is the point a Min or Max?
+            if (point > this.Max()) {
                 this.max_index = this.set.Count - 1;
-            } else if (point < this.set[this.min_index]) {
+            } 
+            if (point < this.Min()) {
                 this.min_index = this.set.Count - 1;
             }
         }
+
+        /// Pop the Max value from the data set and return it
+        /// Find the new Min and Max Value
         public int RetrieveMax()
         {
             int max = this.set[this.max_index];
@@ -93,6 +106,7 @@ namespace IQM
             this.AdjustMinMax();
             return max;
         }
+
         public int RetrieveMin()
         {
             int min = this.set[this.min_index];
@@ -100,6 +114,8 @@ namespace IQM
             this.AdjustMinMax();
             return min;
         }
+
+        /// Find the new Min and Max Values
         private void AdjustMinMax()
         {
             if (this.set.Count == 0) {
@@ -122,12 +138,13 @@ namespace IQM
             }
         }
     }
+
     public class IQSet
     {
         private Quartile firstQuartile;
         private Quartile innerQuartile;
         private Quartile fourthQuartile;
-        public IQSet() 
+        public IQSet()
         {
             this.firstQuartile = new Quartile();
             this.innerQuartile = new Quartile();
@@ -139,7 +156,7 @@ namespace IQM
         }
         public double Q
         {
-            get => (double)this.Count / 4;
+            get => this.Count / 4.0;
         }
         public List<int> FirstQuartile {
             get => this.firstQuartile.Set;
@@ -175,7 +192,6 @@ namespace IQM
                 return;
             }
 
-            // double nextQ = (this.Count + 1) / 4;
             if ((this.Count + 1) % 4 == 0) {
                 this.innerQuartile.AddPoint(point);
                 int min = this.innerQuartile.RetrieveMin();

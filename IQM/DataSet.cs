@@ -13,20 +13,47 @@ namespace IQM
             this.data = new List<int>();
         }
 
-        public int Count()
+        public int Count
         {
-            return this.data.Count();
+            get => this.data.Count();
         }
 
         public List<int> Points {
             get => data;
         }
 
-        ///<summary>Method <c>AddPoint</c> adds a data point and orders the set.</summary>
+        ///<summary>Method <c>AddPoint</c> adds a data point in order.</summary>
         public void AddPoint(int point)
         {
-            this.data.Add(point);
-            this.data.Sort();
+            int start = 0;
+            int end = this.Count;
+            while (true) {
+                if (end - start == 0) {
+                    this.data.Add(point);
+                    break;
+                }
+
+                if (end - start == 1) {
+                    int element = this.data.ElementAt(start);
+                    if (point >= element) {
+                        this.data.Insert(start + 1, point);
+                    } else {
+                        this.data.Insert(start, point);
+                    }
+                    break;
+                }
+
+                List<int> chunk = this.data.GetRange(start, (end - start));
+                int middleElement = chunk.ElementAt(chunk.Count / 2);
+                if (point == middleElement) {
+                    this.data.Insert((end - start) / 2, point);
+                    break;
+                } else if (point > middleElement) {
+                    start += chunk.Count / 2 + 1;
+                } else {
+                    end -= chunk.Count / 2;
+                }
+            }
         }
 
         ///<summary>Method <c>GetIQMean</c> calculates the Innerquartile Mean for the data
