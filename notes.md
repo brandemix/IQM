@@ -20,14 +20,15 @@ to validate the correctness of the AddPoint() and GetIQMean() methods. For other
 Comments are another important part of extending the readability of a program. I added comments to descibe classes, methods, and inner pieces of units to describe my approach to certain scenarios.
 
 ## Part 2
-The first opportunity for optimization I saw was the step where data is inserted at the end of a list
+1. The first opportunity for optimization I saw was the step where data is inserted at the end of a list
 and then sorted at each iteration of the loop. When working up to 100,000 data points, this becomes a pretty significant bottleneck. Since the default comparer for Sort() has Big O of O(n^2) in the worst case, we're looking at Big 0 of (x*n^2) where x is the number of data points were looping over, effectively O(n^3).
 To remedy this, instead of always inserted a new data point at the end, I created an AddPoint() method to insert the data in order, using a divide-and-conquer method. The Big O for the new AddPoint was near constant time.
 
 Another approach I took was removing any calls to copy data into a new set. There was no reason we could not use the data list to run calculations as long as we know which data range we were interested in.
 
-Based on my understanding, because we're storing each data point as a 32-bit integer, we could probably handle a million, but holding a billion data points in memory would require at least 4GB of memory. I would say that's not a reasonable requirement for any desktop application, another solution would need to be found. A possible approach would be to start throwing away data in the first and fourth quartiles, once we reached a set memory limit.
+2. Based on my understanding, because we're storing each data point as a 32-bit integer, we could probably handle a million, but holding a billion data points in memory would require at least 4GB of memory. I would say that's not a reasonable requirement for any desktop application, another solution would need to be found. A possible approach would be to start throwing away data in the first and fourth quartiles, once we reached a set memory limit.
 
+3.
 
 ## Notes
 Create a DataSet class to represent our set of data.
